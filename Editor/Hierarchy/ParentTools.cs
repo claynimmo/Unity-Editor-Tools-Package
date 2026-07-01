@@ -91,4 +91,60 @@ public static class ParentTools
             return false;
         return parent.childCount > 0;
     }
+
+    /// <summary>
+    /// swaps the child with the parent, conserving the relationship with the other children
+    /// </summary>
+    [MenuItem("GameObject/Tools/Parent/Swap With Parent", false, 0)]
+    public static void SwapWithParent(){
+
+        Transform target = Selection.activeTransform;
+        Transform parent = target.parent;
+        Transform grandParent = parent.parent; // can be null
+
+        // capture full tree for undo
+        Undo.RegisterFullObjectHierarchyUndo(parent.gameObject, "Swap With Parent");
+
+        // cache original child indexing, to keep hierarchal structure
+        int parentIndex = parent.GetSiblingIndex();
+        int targetIndex = target.GetSiblingIndex();
+
+        // cache the children
+        int childCount = parent.childCount;
+        Transform[] children = new Transform[childCount];
+        for (int i = 0; i < childCount; i++)
+            children[i] = parent.GetChild(i);
+
+        // cache the children of the swapped component, to make sure grandchildren are not promoted to standard children when the swap is made
+        int grandChildCount = target.childCount;
+        Transform[] grandChildren = new Transform[grandChildCount];
+        for (int i = 0; i < grandChildCount; i++)
+            grandChildren[i] = target.GetChild(i);
+
+        Undo.SetTransformParent(target, grandParent, "Swap With Parent");
+
+        // perform the swap
+        target.SetSiblingIndex(parentIndex);
+        Undo.SetTransformParent(parent, target, "Swap With Parent");
+
+        // move the original children under the new parent
+        foreach (Transform c in children){
+            if (c == target) continue;
+            Undo.SetTransformParent(c, target, "Swap With Parent");
+        }
+
+        // move grand children to its new parent, preserving the relationship it has with its previous parent
+        foreach (Transform c in grandChildren){
+            Undo.SetTransformParent(c, parent, "Swap With Parent");
+        }
+
+        // make the parents position in the children the same point as the original object it swapped with
+        parent.SetSiblingIndex(targetIndex);
+        
+    }
+
+    [MenuItem("GameObject/Tools/Parent/Swap With Parent", true)]
+    private static bool SwapWithParent_Validate(){
+        return MoveParentToChild_Validate();
+    }
 }
