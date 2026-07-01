@@ -25,7 +25,6 @@ public class MeasureToolWindow : EditorWindow
 
     void OnGUI(){
 
-
         threshold = EditorGUILayout.FloatField("Threshold", threshold);
     }
 }

@@ -1,0 +1,7 @@
+{
+  "name": "EditorToolsPackage.Editor",
+  "references": [
+    "EditorToolsPackage.Runtime"
+  ],
+  "includePlatforms": ["Editor"]
+}

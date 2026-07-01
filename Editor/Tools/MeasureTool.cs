@@ -9,10 +9,8 @@ public class MeasureTool : EditorTool
 
     private MeasureToolWindow window;
 
-    private List<Vector3> markers;
+    private List<Vector3> markers = new();
     private Vector3 _lastHitPoint;
-    private bool _hasHitPoint;
-    private bool _hasMarkerPoint;
 
     private bool _lockY;
     private bool _lockX;
@@ -20,9 +18,7 @@ public class MeasureTool : EditorTool
 
     public override GUIContent toolbarIcon{
         get{
-            Texture2D icon = AssetDatabase.LoadAssetAtPath<Texture2D>(
-                "Assets/EditorToolsPackage/Gizmos/Icons/ruler.png"
-            );
+            Texture2D icon = ToolIconLoader.LoadIcon("Gizmos/Icons/ruler.png");
             return new GUIContent(){
                 image = icon,
                 text = "Neighbor Tool",
@@ -64,7 +60,7 @@ public class MeasureTool : EditorTool
 
     public override void OnToolGUI(EditorWindow sceneWindow){
 
-        if (!(sceneWindow is SceneView sceneView)){
+        if (sceneWindow is not SceneView sceneView){
             return;
         }
 
@@ -79,7 +75,6 @@ public class MeasureTool : EditorTool
             if(!isLocked){
                 _lastHitPoint = hit.point;
             }
-            _hasHitPoint = true;
 
             if(e.type == EventType.MouseDown && !e.alt){
                 if(e.button == 1)
@@ -94,9 +89,6 @@ public class MeasureTool : EditorTool
             ColorUtility.TryParseHtmlString("#5ecbf230", out c);
             Handles.color = c;
             //Handles.DrawSolidDisc(_lastHitPoint, Vector3.up, BrushRadius);
-        }
-        else if(!isLocked){
-            _hasHitPoint = false;
         }
 
         // additional event check for locking, since it may fail the raycast
@@ -145,10 +137,6 @@ public class MeasureTool : EditorTool
                 Vector3 constrainedPoint = origin + axis * dist;
 
                 _lastHitPoint = constrainedPoint;
-                _hasHitPoint = true;
-            }
-            else{
-                _hasHitPoint = false;
             }
         }
         Handles.color = Color.yellow;
@@ -190,7 +178,6 @@ public class MeasureTool : EditorTool
     private void PlaceMarker(Vector3 marker){
         if(marker == null) return;
         markers.Add(marker);
-        _hasMarkerPoint = true;
         _lockX = false;
         _lockY = false;
         _lockZ = false;
@@ -198,7 +185,6 @@ public class MeasureTool : EditorTool
 
     private void RemoveMarker(){
         markers.Clear();
-        _hasHitPoint = false;;
     }
 
     private Vector3 GetAxis(){

@@ -14,9 +14,8 @@ public class NeighborTool : EditorTool
     // override the toolbar content to set the custom icon, text, and description
     public override GUIContent toolbarIcon{
         get{
-            Texture2D icon = AssetDatabase.LoadAssetAtPath<Texture2D>(
-                "Assets/EditorToolsPackage/Gizmos/Icons/neighbortool.png"
-            );
+           
+            Texture2D icon = ToolIconLoader.LoadIcon("Gizmos/Icons/neighbortool.png");
             return new GUIContent(){
                 image = icon,
                 text = "Neighbor Tool",

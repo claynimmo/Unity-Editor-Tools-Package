@@ -18,7 +18,6 @@ public class PrefabBrush : EditorWindow
     bool _painting;
     bool _randomScale;
     bool _randomRotation;
-    bool _hasHitPoint;
     Vector3 _lastHitPoint;
     [MenuItem("Tools/Prefab Painter")]
     public static void Open(){
@@ -74,7 +73,6 @@ public class PrefabBrush : EditorWindow
 
         if (Physics.Raycast(ray, out RaycastHit hit)){
             _lastHitPoint = hit.point;
-            _hasHitPoint = true;
 
             if(e.type == EventType.MouseDown && e.button == 0 && !e.alt){
 
@@ -87,9 +85,6 @@ public class PrefabBrush : EditorWindow
             ColorUtility.TryParseHtmlString("#5ecbf230", out c);
             Handles.color = c;
             Handles.DrawSolidDisc(_lastHitPoint, Vector3.up, BrushRadius);
-        }
-        else{
-            _hasHitPoint = false;
         }
     }
 
