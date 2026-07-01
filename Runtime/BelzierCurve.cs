@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections.Generic;
 
-public class BezierCurve : MonoBehaviour
+public class BelzierCurve : MonoBehaviour
 {
     public List<Vector3> controlPoints = new List<Vector3>();
 
