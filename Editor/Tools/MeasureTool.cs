@@ -16,6 +16,7 @@ public class MeasureTool : EditorTool
     private bool _lockX;
     private bool _lockZ;
 
+    
     public override GUIContent toolbarIcon{
         get{
             Texture2D icon = ToolIconLoader.LoadIcon("Gizmos/Icons/ruler.png");
@@ -83,12 +84,6 @@ public class MeasureTool : EditorTool
                     PlaceMarker(_lastHitPoint);
                 e.Use(); // consume event to prevent selecting objects while painting
             }
-
-            // draw the brush
-            Color c;
-            ColorUtility.TryParseHtmlString("#5ecbf230", out c);
-            Handles.color = c;
-            //Handles.DrawSolidDisc(_lastHitPoint, Vector3.up, BrushRadius);
         }
 
         // additional event check for locking, since it may fail the raycast

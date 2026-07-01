@@ -1,6 +1,6 @@
 
 Prefab Brush:
-Paint prefab objects onto the world, replicating the tree brush tool for terrains. The tool is found as a window in the tools menu at the top of the editor. You can set a transform to act as a parent, otherwise it defaults to "Painted Prefabs". Fully randomize rotation rotates all axis, when it normaly only rotates along the y axis. Randomize scale scales uniformly (all axis scale by the same amount). To enable painting, active the enable painting bool in the window.
+Paint prefab objects onto the world, replicating the tree brush tool for terrains. The variables are adjusted from a popup window, where painting cannot be done until at least the prefab is set. You can set a transform to act as a parent, otherwise it defaults to an object (already existing, or new) called "Painted Prefabs". Fully randomize rotation rotates all axis, when it normaly only rotates along the y axis. Randomize scale scales uniformly (all axis scale by the same amount). To enable painting, active the enable painting bool in the window.
 
 Custom rotate tool:
 rotates like normal, but includes a cube in the middle that gives a completely random rotation when pressed.
