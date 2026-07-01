@@ -1,0 +1,12 @@
+{
+  "name": "com.clay.editor",
+  "version": "1.0.0",
+  "displayName": "Editor Package",
+  "description": "Editor tools for improved workflows",
+  "unity": "2022.3",
+  "author": {
+    "name": "Clay",
+    "email": "nimmo.clay@gmail.com",
+    "url": "https://github.com/claynimmo"
+  }
+}
