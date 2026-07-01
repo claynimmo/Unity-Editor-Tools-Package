@@ -1,43 +1,34 @@
-using System.Collections;
-using System.Collections.Generic;
-using System.IO;
 using UnityEditor;
-using UnityEditor.EditorTools;
 using UnityEngine;
+using System.IO;
 
-public class ToolIconLoader
+public static class ToolIconLoader
 {
-    private static string GetRelativePath(string fullPath){
-        fullPath = fullPath.Replace("\\", "/");
-
-        string projectPath = Application.dataPath.Replace("/Assets", "");
-
-        if(fullPath.StartsWith(projectPath)){
-            return fullPath.Substring(projectPath.Length + 1); 
-        }
-
-        return null; // not inside project
-    }
-
     public static Texture2D LoadIcon(string relativePath){
-        var script = MonoScript.FromScriptableObject(ScriptableObject.CreateInstance<BelzierPathEditorTool>());
-        var scriptPath = AssetDatabase.GetAssetPath(script);
-        var folder = Path.GetDirectoryName(scriptPath);
+        // get the path to this script
+        var script = MonoScript.FromScriptableObject(
+            ScriptableObject.CreateInstance<BelzierPathEditorTool>()
+        );
 
-        // move up two folders, since the tools are in editor/tools
-        var root = Path.GetFullPath(Path.Combine(folder, "../.."));
+        string scriptPath = AssetDatabase.GetAssetPath(script); 
 
-        var fullPath = Path.Combine(root, relativePath).Replace("\\", "/");
+        // Assets/EditorToolsPackage/Editor/Tools/BelzierPathEditorTool.cs
+        // Packages/EditorToolsPackage/Editor/Tools/BelzierPathEditorTool.cs
 
-        var projectRelative = GetRelativePath(fullPath);
+        string scriptDir = Path.GetDirectoryName(scriptPath).Replace("\\", "/");
 
-        if (string.IsNullOrEmpty(projectRelative))
-        {
-            Debug.LogError("Icon path is outside project: " + fullPath);
-            return null;
-        }
+        // go up folders
+        string packageRoot = Path.GetFullPath(Path.Combine(scriptDir, "../.."))
+            .Replace("\\", "/");
 
-        return AssetDatabase.LoadAssetAtPath<Texture2D>(projectRelative);
+        string projectRoot = Application.dataPath.Replace("/Assets", "");
+        string projectRelativeRoot = packageRoot.Replace(projectRoot + "/", "");
+        string iconPath = projectRelativeRoot + "/" + relativePath;
+        Texture2D icon = AssetDatabase.LoadAssetAtPath<Texture2D>(iconPath);
+
+        if (icon == null)
+            Debug.LogError("Failed to load icon at: " + iconPath);
+
+        return icon;
     }
-
 }
