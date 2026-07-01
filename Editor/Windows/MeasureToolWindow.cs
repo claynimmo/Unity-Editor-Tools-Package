@@ -2,6 +2,9 @@ using UnityEditor;
 using UnityEditor.EditorTools;
 using UnityEngine;
 
+/// <summary>
+/// popup window to adjust the settings of the measure editor tool
+/// </summary>
 public class MeasureToolWindow : EditorWindow
 {
     public float threshold = 3;

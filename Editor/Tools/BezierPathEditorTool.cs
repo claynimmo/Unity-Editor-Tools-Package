@@ -2,7 +2,7 @@ using UnityEditor;
 using UnityEditor.EditorTools;
 using UnityEngine;
 
-[EditorTool("Belzier Path Tool", typeof(BelzierCurve))]
+[EditorTool("Bezier Path Tool", typeof(BezierCurve))]
 public class BelzierPathEditorTool : EditorTool
 {
     GUIContent _icon;
@@ -18,7 +18,7 @@ public class BelzierPathEditorTool : EditorTool
     public override GUIContent toolbarIcon => _icon;
 
     public override void OnToolGUI(EditorWindow window){
-        BelzierCurve path = (BelzierCurve)target;
+        BezierCurve path = (BezierCurve)target;
 
         if(path == null) return;
         if(path.controlPoints.Count == 0) return;

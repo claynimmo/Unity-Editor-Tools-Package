@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class PathFollower : MonoBehaviour
 {
-    public BelzierCurve path;
+    public BezierCurve path;
     public float speed = 2f;
     float t = 0f;
 

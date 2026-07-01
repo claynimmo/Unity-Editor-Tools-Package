@@ -3,10 +3,10 @@ using UnityEditor.EditorTools;
 using UnityEngine;
 using System.Collections.Generic;
 
+/// <summary> Tool to measure the distance between two points placed from the cursor</summary>
 [EditorTool("Measure Tool")]
 public class MeasureTool : EditorTool
 {
-
     private MeasureToolWindow window;
 
     private List<Vector3> markers = new();
@@ -22,7 +22,7 @@ public class MeasureTool : EditorTool
             return new GUIContent(){
                 image = icon,
                 text = "Neighbor Tool",
-                tooltip = "Perfectly place neighbors from the bounding box"
+                tooltip = "left click to place, right click to clear, x,y,z to lock/unlock axis. Adjust the value in the popup window to change the threshold"
             };
         }
     }
@@ -197,20 +197,11 @@ public class MeasureTool : EditorTool
         return Vector3.up;
     }
 
-    void DrawDepthSphere(Vector3 pos, float radius)
-    {
-        Handles.zTest = UnityEngine.Rendering.CompareFunction.LessEqual; // obey depth
-
-        // Circle facing camera
+    private void DrawDepthSphere(Vector3 pos, float radius){
+        Handles.zTest = UnityEngine.Rendering.CompareFunction.LessEqual;
         Handles.DrawWireDisc(pos, SceneView.currentDrawingSceneView.camera.transform.forward, radius);
-
-        // Circle in XZ plane
         Handles.DrawWireDisc(pos, Vector3.up, radius);
-
-        // Circle in XY plane
         Handles.DrawWireDisc(pos, Vector3.right, radius);
-
-        // Circle in YZ plane
         Handles.DrawWireDisc(pos, Vector3.forward, radius);
     }
 

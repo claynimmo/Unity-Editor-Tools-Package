@@ -1,7 +1,10 @@
 using UnityEngine;
 using System.Collections.Generic;
 
-public class BelzierCurve : MonoBehaviour
+/// <summary>
+/// Standard component that generates a cubic bezier curve from a vector3 array 
+/// </summary>
+public class BezierCurve : MonoBehaviour
 {
     public List<Vector3> controlPoints = new List<Vector3>();
 
@@ -16,7 +19,11 @@ public class BelzierCurve : MonoBehaviour
 
     public int SegmentCount => Mathf.CeilToInt((controlPoints.Count - 1) / 3f);
 
-
+    /// <summary>
+    /// Get a position along the curve
+    /// </summary>
+    /// <param name="t">distance along the curve, normalized from 0-1</param>
+    /// <returns>Vector3 coordinates of the point along the curve (global)</returns>
     public Vector3 GetPoint(float t){
         int seg = Mathf.FloorToInt(t * SegmentCount);
         seg = Mathf.Clamp(seg, 0, SegmentCount - 1);
@@ -39,6 +46,10 @@ public class BelzierCurve : MonoBehaviour
         return CubicBezier(p0, p1, p2, p3, localT);
     }
 
+    /// <summary>
+    /// Add a point to the curve
+    /// </summary>
+    /// <param name="point"> new vector3 point in local space</param>
     public void AddPoint(Vector3 point){
         controlPoints.Add(point);
     }
@@ -52,7 +63,7 @@ public class BelzierCurve : MonoBehaviour
             t*t*t * p3;
     }
 
-    void OnDrawGizmos(){
+    private void OnDrawGizmos(){
         Gizmos.color = Color.yellow;
 
         // draw the curve
