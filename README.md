@@ -27,7 +27,8 @@ These tools appear in the popup when right clicking on a gameobject in the hiera
 #### Parent
 There are several tools regarding managing parents. Right clicking an object with children gives the commands:
  
-- Centre to Children: Move the selected objects origin to the centre of its children as defined by the centre pivot mode.
+- **Centre to Children**: Move the selected objects origin to the centre of its children as defined by the centre pivot mode.
+- **Reset Scale/Rotation**: Reset the scale or rotation of the parent without impacing the childing, useful for when the selected parent is an empty object with a non-uniform transform, negatively impacting the children (such as distortions when rotating the child).
 
 Right clicking an object with a parent gives the commands:
 
