@@ -6,6 +6,29 @@ using System;
 public static class ParentTools
 {
 
+    private static bool HasChildrenValidator(){
+        Transform selected = Selection.activeTransform;
+        if(selected == null)
+            return false;
+        
+        return selected.childCount > 0;
+    }
+
+    private static bool HasParentValidator(){
+        Transform selected = Selection.activeTransform;
+        if(selected == null)
+            return false;
+        
+        if(selected.parent == null)
+            return false;
+        
+        return true;
+    }
+
+    private static bool StandardValidator(){
+        return Selection.activeTransform != null;
+    }
+
     private static void MoveObjects(Vector3 parentPos, Transform target, Func<Transform, bool>? func = null){
         int childCount = target.childCount;
 
@@ -84,11 +107,7 @@ public static class ParentTools
 
     [MenuItem("GameObject/Tools/Parent/Centre to Children", true)]
     private static bool CentreParentToChildren_Validate(){
-        Transform selected = Selection.activeTransform;
-        if(selected == null)
-            return false;
-        
-        return selected.childCount > 0;
+        return HasChildrenValidator();
     }
 
     /// <summary>
@@ -108,14 +127,7 @@ public static class ParentTools
 
     [MenuItem("GameObject/Tools/Parent/Move Parent to This", true)]
     private static bool MoveParentToChild_Validate(){
-        Transform selected = Selection.activeTransform;
-        if(selected == null)
-            return false;
-        
-        Transform parent = selected.parent;
-        if(parent == null)
-            return false;
-        return parent.childCount > 0;
+        return HasParentValidator();
     }
 
     /// <summary>
@@ -171,7 +183,7 @@ public static class ParentTools
 
     [MenuItem("GameObject/Tools/Parent/Swap With Parent", true)]
     private static bool SwapWithParent_Validate(){
-        return MoveParentToChild_Validate();
+        return HasParentValidator();
     }
 
     /// <summary>
@@ -190,7 +202,7 @@ public static class ParentTools
 
     [MenuItem("GameObject/Tools/Parent/Reset Scale (not effecting children)", true)]
     private static bool ResetScale_Validate(){
-        return Selection.activeTransform != null;
+        return StandardValidator();
     }
 
     /// <summary>
@@ -209,7 +221,7 @@ public static class ParentTools
 
     [MenuItem("GameObject/Tools/Parent/Reset Rotation (not effecting children)", true)]
     private static bool ResetRotation_Validate(){
-        return ResetScale_Validate();
+        return StandardValidator();
     }
 
 
@@ -234,7 +246,7 @@ public static class ParentTools
 
     [MenuItem("GameObject/Tools/Parent/Set Active/Disable Children", true)]
     private static bool DisableChildren_Validate(){
-        return CentreParentToChildren_Validate();
+        return HasChildrenValidator();
     }
 
     /// <summary>
@@ -248,6 +260,7 @@ public static class ParentTools
 
     [MenuItem("GameObject/Tools/Parent/Set Active/Enable Children", true)]
     private static bool EnableChildren_Validate(){
-        return CentreParentToChildren_Validate();
+        return HasChildrenValidator();
     }
+
 }
