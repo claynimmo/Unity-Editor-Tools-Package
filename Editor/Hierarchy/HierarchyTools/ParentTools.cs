@@ -211,4 +211,43 @@ public static class ParentTools
     private static bool ResetRotation_Validate(){
         return ResetScale_Validate();
     }
+
+
+    // helper function to perform the set active function
+    private static void SetChildrenActive(bool isActive, Transform target){
+        int childCount = target.childCount;
+        for(int i = 0; i < childCount; i++){
+            Transform child = target.GetChild(i);
+            Undo.RegisterCompleteObjectUndo(child.gameObject, "Changed Active");
+            child.gameObject.SetActive(isActive);
+        }
+    }
+
+    /// <summary>
+    /// disables all children of the selected object
+    /// </summary>
+    [MenuItem("GameObject/Tools/Parent/Set Active/Disable Children", false, 0)]
+    public static void DisableChildren(){
+        SetChildrenActive(false, Selection.activeTransform);
+    }
+
+
+    [MenuItem("GameObject/Tools/Parent/Set Active/Disable Children", true)]
+    private static bool DisableChildren_Validate(){
+        return CentreParentToChildren_Validate();
+    }
+
+    /// <summary>
+    /// enables all children of the selected object
+    /// </summary>
+    [MenuItem("GameObject/Tools/Parent/Set Active/Enable Children", false, 0)]
+    public static void EnableChildren(){
+        SetChildrenActive(true, Selection.activeTransform);
+    }
+
+
+    [MenuItem("GameObject/Tools/Parent/Set Active/Enable Children", true)]
+    private static bool EnableChildren_Validate(){
+        return CentreParentToChildren_Validate();
+    }
 }
