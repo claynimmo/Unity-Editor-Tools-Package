@@ -5,7 +5,9 @@ using System.Reflection;
 using UnityEngine;
 using UnityEditor;
 
-// helper to fill a list property of a type from a list of gameobjects
+/// <summary>
+/// helper to fill a list property of a type from a list of gameobjects
+/// </summary>
 public static class ListSelectionFiller{
 
     public static void FillFromList<T>(SerializedProperty listProp, List<T> values){
