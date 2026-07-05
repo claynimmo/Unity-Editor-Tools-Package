@@ -1,6 +1,7 @@
 using UnityEditor;
 using UnityEditor.EditorTools;
 using UnityEngine;
+using UnityEditor.ShortcutManagement;
 using System.Collections.Generic;
 
 /// <summary> Tool to measure the distance between two points placed from the cursor</summary>
@@ -23,7 +24,7 @@ public class MeasureTool : EditorTool
             return new GUIContent(){
                 image = icon,
                 text = "Neighbor Tool",
-                tooltip = "left click to place, right click to clear, x,y,z to lock/unlock axis. Adjust the value in the popup window to change the threshold"
+                tooltip = "left click to place, right click to clear, x,y,z to lock/unlock axis. Adjust the value in the popup window to change the threshold (alt+M)"
             };
         }
     }
@@ -35,6 +36,11 @@ public class MeasureTool : EditorTool
 
     public override void OnWillBeDeactivated(){
         SceneView.duringSceneGui -= OnSceneGUI;
+    }
+
+    [Shortcut("Tools/Measure Tool", KeyCode.M, ShortcutModifiers.Alt)]
+    static void ActivateNeighborTool(){
+        ToolManager.SetActiveTool<MeasureTool>();
     }
 
     void OnSceneGUI(SceneView view){

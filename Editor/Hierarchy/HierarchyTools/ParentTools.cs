@@ -1,10 +1,35 @@
 using UnityEditor;
 using UnityEngine;
 
+using System;
+
 public static class ParentTools
 {
 
-    private static void MoveObjects(Vector3 parentPos, Transform target){
+    private static bool HasChildrenValidator(){
+        Transform selected = Selection.activeTransform;
+        if(selected == null)
+            return false;
+        
+        return selected.childCount > 0;
+    }
+
+    private static bool HasParentValidator(){
+        Transform selected = Selection.activeTransform;
+        if(selected == null)
+            return false;
+        
+        if(selected.parent == null)
+            return false;
+        
+        return true;
+    }
+
+    private static bool StandardValidator(){
+        return Selection.activeTransform != null;
+    }
+
+    private static void MoveObjects(Vector3 parentPos, Transform target, Func<Transform, bool>? func = null){
         int childCount = target.childCount;
 
         // register undo
@@ -15,19 +40,43 @@ public static class ParentTools
 
         // register the childrens global position
         Vector3[] worldPos = new Vector3[childCount];
+        Quaternion[] worldRot = new Quaternion[childCount];
+        Vector3[] worldScale = new Vector3[childCount];
         for(int i = 0; i < childCount; i++){
             Transform child = target.GetChild(i);
             worldPos[i] = child.position;
+            worldRot[i] = child.rotation;
+            worldScale[i] = child.lossyScale;
         }
 
         target.position = parentPos;
+
+        func?.Invoke(target);
 
         // move the children back to the global position
         for(int i = 0; i < childCount; i++){
             Transform child = target.GetChild(i);
             child.position = worldPos[i];
+            child.rotation = worldRot[i];
+            SetWorldScale(child, worldScale[i]);
         }
 
+    }
+
+    private static void SetWorldScale(Transform t, Vector3 worldScale){
+        Transform parent = t.parent;
+
+        if(parent != null){
+            Vector3 parentScale = parent.lossyScale;
+            t.localScale = new Vector3(
+                worldScale.x / parentScale.x,
+                worldScale.y / parentScale.y,
+                worldScale.z / parentScale.z
+            );
+        }
+        else{
+            t.localScale = worldScale;
+        }
     }
 
     /// <summary>
@@ -58,11 +107,7 @@ public static class ParentTools
 
     [MenuItem("GameObject/Tools/Parent/Centre to Children", true)]
     private static bool CentreParentToChildren_Validate(){
-        Transform selected = Selection.activeTransform;
-        if(selected == null)
-            return false;
-        
-        return selected.childCount > 0;
+        return HasChildrenValidator();
     }
 
     /// <summary>
@@ -82,14 +127,7 @@ public static class ParentTools
 
     [MenuItem("GameObject/Tools/Parent/Move Parent to This", true)]
     private static bool MoveParentToChild_Validate(){
-        Transform selected = Selection.activeTransform;
-        if(selected == null)
-            return false;
-        
-        Transform parent = selected.parent;
-        if(parent == null)
-            return false;
-        return parent.childCount > 0;
+        return HasParentValidator();
     }
 
     /// <summary>
@@ -145,6 +183,84 @@ public static class ParentTools
 
     [MenuItem("GameObject/Tools/Parent/Swap With Parent", true)]
     private static bool SwapWithParent_Validate(){
-        return MoveParentToChild_Validate();
+        return HasParentValidator();
     }
+
+    /// <summary>
+    /// resets the scale of the parent, without impacting the children
+    /// </summary>
+    [MenuItem("GameObject/Tools/Parent/Reset Scale (not effecting children)", false, 0)]
+    public static void ResetScale(){
+
+        Transform target = Selection.activeTransform;
+        bool F(Transform t){ // func has to be bool, since void return type is not allowed
+            t.localScale = Vector3.one;
+            return true;
+        }
+        MoveObjects(target.position,target,F);
+    }
+
+    [MenuItem("GameObject/Tools/Parent/Reset Scale (not effecting children)", true)]
+    private static bool ResetScale_Validate(){
+        return StandardValidator();
+    }
+
+    /// <summary>
+    /// resets the rotation of the parent, without impacting the children
+    /// </summary>
+    [MenuItem("GameObject/Tools/Parent/Reset Rotation (not effecting children)", false, 0)]
+    public static void ResetRotation(){
+
+        Transform target = Selection.activeTransform;
+        bool F(Transform t){ // func has to be bool, since void return type is not allowed
+            t.localRotation = Quaternion.Euler(Vector3.zero);
+            return true;
+        }
+        MoveObjects(target.position,target,F);
+    }
+
+    [MenuItem("GameObject/Tools/Parent/Reset Rotation (not effecting children)", true)]
+    private static bool ResetRotation_Validate(){
+        return StandardValidator();
+    }
+
+
+    // helper function to perform the set active function
+    private static void SetChildrenActive(bool isActive, Transform target){
+        int childCount = target.childCount;
+        for(int i = 0; i < childCount; i++){
+            Transform child = target.GetChild(i);
+            Undo.RegisterCompleteObjectUndo(child.gameObject, "Changed Active");
+            child.gameObject.SetActive(isActive);
+        }
+    }
+
+    /// <summary>
+    /// disables all children of the selected object
+    /// </summary>
+    [MenuItem("GameObject/Tools/Parent/Set Active/Disable Children", false, 0)]
+    public static void DisableChildren(){
+        SetChildrenActive(false, Selection.activeTransform);
+    }
+
+
+    [MenuItem("GameObject/Tools/Parent/Set Active/Disable Children", true)]
+    private static bool DisableChildren_Validate(){
+        return HasChildrenValidator();
+    }
+
+    /// <summary>
+    /// enables all children of the selected object
+    /// </summary>
+    [MenuItem("GameObject/Tools/Parent/Set Active/Enable Children", false, 0)]
+    public static void EnableChildren(){
+        SetChildrenActive(true, Selection.activeTransform);
+    }
+
+
+    [MenuItem("GameObject/Tools/Parent/Set Active/Enable Children", true)]
+    private static bool EnableChildren_Validate(){
+        return HasChildrenValidator();
+    }
+
 }
