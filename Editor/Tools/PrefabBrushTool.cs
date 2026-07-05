@@ -1,6 +1,7 @@
 using UnityEditor;
 using UnityEditor.EditorTools;
 using UnityEngine;
+using UnityEditor.ShortcutManagement;
 
 /// <summary> A tool to paint prefabs where the mouse is touching, replicating the terrain brush tool </summary>
 [EditorTool("Prefab Brush Tool")]
@@ -18,17 +19,26 @@ public class PrefabBrushTool : EditorTool
     private bool _randomRotation;
     Vector3 _lastHitPoint;
 
-    public override GUIContent toolbarIcon => EditorGUIUtility.IconContent("TerrainInspector.TerrainToolTrees");
+    public override GUIContent toolbarIcon{
+        get{
+            var content = EditorGUIUtility.IconContent("TerrainInspector.TerrainToolTrees");
+            content.tooltip = "Prefab Brush Tool (Alt+B)";
+            return content;
+        }
+    }
 
     public override void OnActivated(){
         window = EditorWindow.GetWindow<PrefabBrushWindow>();
     }
 
-    public override void OnWillBeDeactivated()
-    {
+    public override void OnWillBeDeactivated(){
         window.CloseMenu();
     }
 
+    [Shortcut("Tools/Prefab Brush Tool", KeyCode.B, ShortcutModifiers.Alt)]
+    static void ActivatePrefabBrushTool(){
+        ToolManager.SetActiveTool<PrefabBrushTool>();
+    }
 
     public override void OnToolGUI(EditorWindow sceneWindow){
     

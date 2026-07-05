@@ -19,13 +19,13 @@ public class NeighborTool : EditorTool
             return new GUIContent(){
                 image = icon,
                 text = "Neighbor Tool",
-                tooltip = "Perfectly place neighbors from the bounding box"
+                tooltip = "Perfectly place neighbors from the bounding box (alt+N)"
             };
         }
     }
 
     // shortcut to neighbours when pressing n
-    [Shortcut("Tools/Neighbor Tool", KeyCode.N)]
+    [Shortcut("Tools/Neighbor Tool", KeyCode.N, ShortcutModifiers.Alt)]
     static void ActivateNeighborTool(){
         var t = Selection.activeTransform;
         if (t != null)

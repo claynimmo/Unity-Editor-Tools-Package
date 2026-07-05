@@ -1,4 +1,12 @@
 
+## Keybind List
+
+- alt+b: shortcut to prefab brush tool ([see Toolbar Tools](#toolbar-tools))
+- alt+r: shortcut to custom rotate tool ([see Toolbar Tools](#toolbar-tools))
+- alt+x: shortcut to child move tool ([see Toolbar Tools](#toolbar-tools))
+- alt+n: shortcut to neighbors tool ([see Toolbar Tools](#toolbar-tools))
+- alt+m: shortcut to measure tool ([see Toolbar Tools](#toolbar-tools))
+- ctrl+alt+s: save current selection ([see Hierarchy/Selection Tools](#selection))
 
 ## Toolbar Tools
 **Prefab Brush**:
@@ -42,5 +50,22 @@ Right clicking an object with a parent gives the commands:
 
 - **UV Scale**: slightly increase or decrease local scale uniformely by a negligable factor, to remove overlapping UVs.
 
+#### Selection
+A set of tools that appear when one or more gameobjects are selected in the hierarchy.
+
+- **Save Selected Objects**: Save all selected objects into a static cache, to be used in other tools. It essentially acts as storing the multi-selection in a form where it is not reset when clicking away.
+
 ### Visuals
 The visuals of the hierarchy menu is adjusted to draw an icon next to the gameobjects, to make it easier to visually see the purpose of an object. It includes preferences to enable or disable any of the icons. The blue and pink diamonds represent invisible and empty objects respectively.
+
+## Context Tools
+Context tools appear when right clicking on serialized fields or components from the inspector when selected on a gameobject.
+
+Tools that appear when right clicking a component:
+
+### List/Array:
+
+- **Fill from Saved Selection**: appears when the static cache saved through the *Save Selected Objects* right-click selection tool. It fills the collection using the stored object references. For example, when filling a list of Images, and you select 30 gameobject with only 20 having images, it fills the list with references to the 20 image component from the selected items.This tool is incredibly useful to skip having to lock the inspector on the object with the list to fill, then selecting and dragging the components in at once. Has the keybind alt+s.
+
+  - **Vector3**: overridden to provide fill options using the transform fields (world/local position, scale, euler angles).
+

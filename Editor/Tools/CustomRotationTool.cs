@@ -1,14 +1,26 @@
 using UnityEditor;
 using UnityEditor.EditorTools;
 using UnityEngine;
-
+using UnityEditor.ShortcutManagement;
 ///
 /// <summary> Custom rotation tool that gives a button in the center to rotate randomly, for placing objects like rocks </summary>
 /// 
 [EditorTool("Rotate Tool")]
 public class CustomRotationTool : EditorTool
 {
-    public override GUIContent toolbarIcon => EditorGUIUtility.IconContent("RotateTool");
+
+    public override GUIContent toolbarIcon{
+        get{
+            var content = EditorGUIUtility.IconContent("RotateTool");
+            content.tooltip = "Custom Rotate Tool (Alt+R)";
+            return content;
+        }
+    }
+
+    [Shortcut("Tools/Rotate Tool", KeyCode.R, ShortcutModifiers.Alt)]
+    static void ActivateNeighborTool(){
+        ToolManager.SetActiveTool<CustomRotationTool>();
+    }
 
 
     public override void OnToolGUI(EditorWindow window){

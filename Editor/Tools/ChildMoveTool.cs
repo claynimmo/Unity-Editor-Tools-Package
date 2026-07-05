@@ -1,6 +1,7 @@
 using UnityEditor;
 using UnityEditor.EditorTools;
 using UnityEngine;
+using UnityEditor.ShortcutManagement;
 
 ///
 /// <summary> Custom move tool that gives movement gizmos to every individual child of the selected object at once, making it especially easier to move invisible walls </summary>
@@ -8,8 +9,19 @@ using UnityEngine;
 [EditorTool("Child Move Tool")]
 public class ChildMoveTool : EditorTool
 {
-    public override GUIContent toolbarIcon => EditorGUIUtility.IconContent("MoveTool");
+    
+    public override GUIContent toolbarIcon{
+        get{
+            var content = EditorGUIUtility.IconContent("MoveTool");
+            content.tooltip = "Child Move Tool (Alt+X)";
+            return content;
+        }
+    }
 
+    [Shortcut("Tools/Child Move Tool", KeyCode.X, ShortcutModifiers.Alt)]
+    static void ActivateMoveTool(){
+        ToolManager.SetActiveTool<ChildMoveTool>();
+    }
 
     public override void OnToolGUI(EditorWindow window){
         Transform t = Selection.activeTransform;
