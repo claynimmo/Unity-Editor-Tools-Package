@@ -4,7 +4,10 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Linq;
-// adds context menu pe
+
+/// <summary>
+/// Menu item that appears over list or array elements in the inspector, allowing the user to fill the list from the objects saved in the static cache (from the class SelectionCache)
+/// </summary>
 [InitializeOnLoad]
 public static class ListContextInjector {
 
