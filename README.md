@@ -58,6 +58,8 @@ A set of tools that appear when one or more gameobjects are selected in the hier
 ### Visuals
 The visuals of the hierarchy menu is adjusted to draw an icon next to the gameobjects, to make it easier to visually see the purpose of an object. It includes preferences to enable or disable any of the icons. The blue and pink diamonds represent invisible and empty objects respectively.
 
+
+
 ## Context Tools
 Context tools appear when right clicking on serialized fields or components from the inspector when selected on a gameobject.
 
@@ -66,6 +68,11 @@ Tools that appear when right clicking a component:
 ### All Property Types:
 
 - **Reset Property**: Resets the value of the selected property to the default, matching the behaviour of resetting a component, but only for the one property. Useful if you want to reset a value, but not the entire component.
+
+### Components:
+Component references include types like colliders or custom scripts, that requires a gameobject to function
+
+- **Swap Reference**: If there are multiple of the same component type (like two box colliders, and a sphere collider), an option to swap the reference to one of these alternative components is given. The options appear in the order of the inspector, top down. If two components have the same name, then it will have no visual change despite having a backend change.
 
 ### List/Array:
 
