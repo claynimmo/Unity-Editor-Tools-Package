@@ -22,7 +22,10 @@ position the parent like normal, but also include cardinal direction only moveme
 When selecting a transform, the tool becomes available. It creates a bounding box around the object and its children's mesh filters. Pressing on one of the arrows duplicates the object, and aligns it perfectly to that face. This tool is helpful for perfectly aligning wall models without overlapping UVs.
 
 **Measure tool:**
-measure the distance between multiple different points. Pressing x y or z locks the movement in that direction, similar to the controls in blender. Left click places the marker where the mouse is raycast, and right click removes all markers. The tool opens a window for additional settings, which includes the distance threshold. The threshold changes the measurement line to red when it exceeds the distance specified by the threshold. Use this tool against known distance parameters, like jump height, to test if the level design is usable without needing to continuously enter play mode to test.
+measure the distance between multiple different points. Pressing x y or z locks the movement in that direction, similar to the controls in blender. Left click places the marker where the mouse is raycast, and right click removes all markers. The tool opens a window for additional settings, which includes the distance threshold. The threshold changes the measurement line to red when it exceeds the distance specified by the threshold. Use this tool against known distance parameters, like jump height, to test if the level design is usable without needing to continuously enter play mode to test. The colours of the tool can be changed in the preferences.
+
+**UI Positioning Tool:**
+Position ui elements by snapping to guidelines. There are two guidlines per axis, and they snap to the bounds of nearby rect transforms. This tool helps in aligning the bounds of UI elements, where it is hard to do otherwise due to differences in scale, width, and anchor positions. The colours can be changed in the preferences.
 
 **Bezier Curve:**
 A bezier curve is included in the package. Add the BezierPath script to any gameobject to create the path. On selecting it, a tool becomes available where all of the vertices can be moved individually, adjusting the curve. A sample script to follow this path has been provided.
