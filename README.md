@@ -50,6 +50,10 @@ Right clicking an object with a parent gives the commands:
 
 - **UV Scale**: slightly increase or decrease local scale uniformly by a negligible factor, to remove overlapping UVs.
 
+#### Rect Transform
+
+- **Transform Flip X/Y**: flips the position of the UI element from the centre of the canvas, assisting with creating symmetry.
+
 #### Selection
 A set of tools that appear when one or more gameobjects are selected in the hierarchy.
 
