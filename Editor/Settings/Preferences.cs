@@ -33,7 +33,7 @@ static class Preferences
     }
 }
 
-public struct ColorPref{
+public class ColorPref{
     public string label;
     public string defaultHex;
     public string key;
