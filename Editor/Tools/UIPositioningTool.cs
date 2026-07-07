@@ -46,6 +46,10 @@ public class UIPositioningTool : EditorTool
 
         _alreadyIn2D = sceneView.in2DMode;
 
+        _defaultCol = ToolPrefs.UIDefaultCol;
+        _hoverCol   = ToolPrefs.UIHoverCol;
+        _dragCol    = ToolPrefs.UIDragCol;
+        _boundsCol  = ToolPrefs.UIBoundsCol;
         _transformCache = FindObjectsOfType<RectTransform>().ToList();
 
         sceneView.in2DMode = true;
