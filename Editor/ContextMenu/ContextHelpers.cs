@@ -101,6 +101,9 @@ public class ContextHelpers : MonoBehaviour
     /// <param name="property">property field to get the referenced object from</param>
     /// <returns>GameObject represented by Component.gameObject. Can be null</returns>
     public static GameObject GetReferencedGameObject(SerializedProperty property){
+        if(property.propertyType != SerializedPropertyType.ObjectReference)
+             return null;
+
         object obj = property.objectReferenceValue;
 
         if(obj == null)
@@ -139,6 +142,7 @@ public class ContextHelpers : MonoBehaviour
             }
 
             FieldInfo field = currentType.GetField(section, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
+            if(field == null) return null;
             currentType = field.FieldType;
         }
         return currentType;

@@ -16,6 +16,7 @@ public class SwapReferenceContextMenu : MonoBehaviour
         if(property.isArray) return;
 
         Type fieldType = ContextHelpers.GetPropertyFieldType(property);
+        if(fieldType == null) return;
         GameObject referencedObj = ContextHelpers.GetReferencedGameObject(property);
 
         if(referencedObj == null) return;
