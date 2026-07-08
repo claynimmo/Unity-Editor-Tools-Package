@@ -188,7 +188,6 @@ public static class HierarchyIcons
 
     // function to print the icon to the hiearchy
     static void PaintIcon(Texture2D icon, GameObject obj, Rect rect, Vector2? offset, Vector2? scale = null){
-        if(icon == null) return;
         
         if(scale == null) scale   = new Vector2(16,16);
         if(offset == null) offset = new Vector2(4,1);
@@ -210,6 +209,8 @@ public static class HierarchyIcons
             GUI.color = new Color(0.6f, 0.6f, 0.6f, 1f); // darkened
 
         Rect iconRect = new Rect(x + offset.Value.x, rect.y+offset.Value.y, scale.Value.x, scale.Value.y);
+
+        if(icon == null) return;
         GUI.DrawTexture(iconRect, icon);
 
         GUI.color = Color.white;
