@@ -17,6 +17,11 @@ public class MeasureTool : EditorTool
     private bool _lockX;
     private bool _lockZ;
 
+    private Color _placingCol = Color.magenta;
+    private Color _markerCol = Color.red;
+    private Color _defaultCol = Color.blue;
+    private Color _thresholdCol = Color.red;
+
     
     public override GUIContent toolbarIcon{
         get{
@@ -32,6 +37,11 @@ public class MeasureTool : EditorTool
     public override void OnActivated(){
         window = EditorWindow.GetWindow<MeasureToolWindow>();
         SceneView.duringSceneGui += OnSceneGUI;
+
+        _placingCol = ToolPrefs.MeasurePlacingCol;
+        _markerCol  = ToolPrefs.MeasureMarkerCol;
+        _defaultCol = ToolPrefs.MeasureDefaultCol;
+        _thresholdCol = ToolPrefs.MeasureThresholdCol;
     }
 
     public override void OnWillBeDeactivated(){
@@ -145,10 +155,10 @@ public class MeasureTool : EditorTool
         float sphereSize = 0.1f;
         float threshold = window.threshold;
         for(int i = 1; i < markers.Count; i+=2){
-            Handles.color = Color.blue;
+            Handles.color = _defaultCol;
             float dist = Vector3.Distance(markers[i], markers[i-1]);
             if(dist > threshold){
-                Handles.color = Color.red;
+                Handles.color = _thresholdCol;
             }
             Handles.DrawAAPolyLine(5f, markers[i], markers[i-1]);
             Vector3 size = new Vector3(0.3f,0.3f,0.3f);
@@ -162,7 +172,7 @@ public class MeasureTool : EditorTool
         }
 
         foreach(Vector3 m in markers){
-            Handles.color = Color.red;
+            Handles.color = _markerCol;
             Handles.zTest = UnityEngine.Rendering.CompareFunction.LessEqual;
             DrawDepthSphere(m, sphereSize);
         }
@@ -170,7 +180,7 @@ public class MeasureTool : EditorTool
         Handles.zTest = UnityEngine.Rendering.CompareFunction.Always;
 
         if(pendingPlace){
-            Handles.color = Color.magenta;
+            Handles.color = _placingCol;
             Handles.DrawLine(markers[markers.Count - 1], _lastHitPoint);
             DrawDepthSphere(_lastHitPoint,sphereSize);
         }
