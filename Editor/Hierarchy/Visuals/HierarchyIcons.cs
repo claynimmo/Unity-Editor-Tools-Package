@@ -189,6 +189,8 @@ public static class HierarchyIcons
     // function to print the icon to the hiearchy
     static void PaintIcon(Texture2D icon, GameObject obj, Rect rect, Vector2? offset, Vector2? scale = null){
         
+        if (Event.current.type != EventType.Repaint)
+            return;
         if(scale == null) scale   = new Vector2(16,16);
         if(offset == null) offset = new Vector2(4,1);
 

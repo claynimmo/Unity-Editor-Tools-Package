@@ -28,7 +28,8 @@ public static class ParentTools
     private static bool StandardValidator(){
         return Selection.activeTransform != null;
     }
-
+    
+    #nullable enable
     private static void MoveObjects(Vector3 parentPos, Transform target, Func<Transform, bool>? func = null){
         int childCount = target.childCount;
 
@@ -62,6 +63,7 @@ public static class ParentTools
         }
 
     }
+    #nullable disable
 
     private static void SetWorldScale(Transform t, Vector3 worldScale){
         Transform parent = t.parent;
